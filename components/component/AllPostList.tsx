@@ -4,7 +4,7 @@ import Post from "./Post";
 import fetchAllPosts from "@/lib/allPostData";
 
 export default async function AllPostList() {
-  const { userId } = auth();
+  const { userId } = await auth();
 
   if (!userId) {
     return;

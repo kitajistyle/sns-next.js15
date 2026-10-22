@@ -4,7 +4,7 @@ import { auth } from "@clerk/nextjs/server";
 import Post from "./Post";
 
 export default async function PostList({ username }: { username?: string }) {
-  const { userId } = auth();
+  const { userId } = await auth();
   console.log(username);
 
   if (!userId) {

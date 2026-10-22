@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { Input } from "@/components/ui/input";
 import { LogInIcon, SearchIcon, BellIcon, MailIcon } from "./Icons";
-import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
+import { Show, UserButton } from "@clerk/nextjs";
 
 export default function Header() {
   return (
@@ -29,14 +29,14 @@ export default function Header() {
             <MailIcon className="h-6 w-6 text-muted-foreground" />
           </Link>
             <div>
-              <SignedIn>
+              <Show when="signed-in">
                 <UserButton/>
-              </SignedIn>
-              <SignedOut>
+              </Show>
+              <Show when="signed-out">
                 <Link href="/sign-in" className="w-20 inline-block" prefetch={false}>
                   ログイン
                 </Link>
-              </SignedOut>
+              </Show>
             </div>
         </div>
       </div>

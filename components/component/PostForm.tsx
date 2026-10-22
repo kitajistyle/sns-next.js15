@@ -3,10 +3,9 @@ import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { SendIcon } from "./Icons";
-import { useRef, useState } from "react";
+import { useActionState, useEffect, useRef, useState } from "react";
 import { addPostAction } from "@/lib/actions";
 import SubmitButton from "./SubmitButton";
-import { useFormState } from "react-dom";
 import { from } from "svix/dist/openapi/rxjsStub";
 import { useUser } from "@clerk/nextjs";
 
@@ -23,12 +22,14 @@ export default function PostForm() {
 const formRef = useRef<HTMLFormElement>(null);
 
 
-const [state, formAction] = useFormState(addPostAction, initialState);
+const [state, formAction] = useActionState(addPostAction, initialState);
 
 
-if (state.success && formRef.current) {
-  formRef.current.reset();
-}
+useEffect(() => {
+  if (state.success) {
+    formRef.current?.reset();
+  }
+}, [state]);
 
   return (
     <div className="flex items-center gap-4">

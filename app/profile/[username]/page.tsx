@@ -9,10 +9,10 @@ import { notFound } from "next/navigation";
 export default async function ProfilePage({
   params
 }: {
-  params: { username: string };
+  params: Promise<{ username: string }>;
 }) {
-  const username = params.username;
-  const { userId: currentUserId } = auth();
+  const { username } = await params;
+  const { userId: currentUserId } = await auth();
   if (!currentUserId) {
     notFound();
   }

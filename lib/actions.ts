@@ -1,6 +1,6 @@
 "use server";
 import { auth } from "@clerk/nextjs/server";
-import { revalidatePath, revalidateTag } from "next/cache";
+import { revalidatePath, updateTag } from "next/cache";
 import { z } from "zod";
 import prisma from "./prisma";
 
@@ -19,7 +19,7 @@ export async function addPostAction(
   formData: FormData
 ): Promise<PostActionState> {
   try {
-    const { userId } = auth();
+    const { userId } = await auth();
     if (!userId) {
       return { error: "ログインしてください", success: false };
     }
@@ -38,7 +38,7 @@ export async function addPostAction(
     });
 
     revalidatePath("/");
-    revalidateTag("post");
+    updateTag("post");
 
     return {
       error: undefined,
@@ -61,7 +61,7 @@ export async function addPostAction(
 }
 
 export async function likeAction(postId: string) {
-  const { userId } = auth();
+  const { userId } = await auth();
   if (!userId) {
     throw new Error("ログインしてください");
   }
@@ -97,7 +97,7 @@ export async function likeAction(postId: string) {
 }
 
 export const followAction = async (userId: string) => {
-  const { userId: currentUserId } = auth();
+  const { userId: currentUserId } = await auth();
   if (!currentUserId) {
     throw new Error("ログインしてください");
   }
